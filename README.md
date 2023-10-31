@@ -8,3 +8,6 @@ This is a initContainer which will decrypt the secrets and mount them in the pod
 
 ## How it works
 This initContainer will decrypt the secrets and write them to `/tmp/opt/conf/{key}`. Since, the same volume is mounted in the app container, these files can be read by the app container and secrets can be used.
+
+## Screenshots
+![screenshot](img/initContainer.png)
