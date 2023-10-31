@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-pod-with-init-container
+  namespace: dev
+spec:
+  serviceAccountName: devuser
+  initContainers:
+  - name: encrypted-secrets-init-container
+    image: shubhindia/encrypted-secrets-init:latest
+    imagePullPolicy: Always
+    command: ["go","run","/app/main.go"]
+    volumeMounts:
+      # path to store the secrets after fetched from vault
+    - name: data
+      mountPath: /tmp/opt/conf
+  containers:
+    # Application Container 1 
+  - name: ubuntu
+    image: ubuntu:22.04
+    command:
+      - sleep
+      - infinity
+    volumeMounts:
+    # App sources secret file from the same Volume which is mounted by Init container above
+    - name: data
+      mountPath: /tmp/opt/conf
+    resources: {}
+  volumes:
+  - name: data
+    emptyDir: {}
